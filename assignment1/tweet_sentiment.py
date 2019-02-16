@@ -8,12 +8,7 @@ def lines(fp):
     print(str(len(fp.readlines())))
 
 def main():
-    print('We out here')
-    # sent_file = open(sys.argv[1])
-    # tweet_file = open(sys.argv[2])
-    # hw()
-    # lines(sent_file)
-    # lines(tweet_file)
+    print('Starting the scoring')
 
 afinnfile = open("AFINN-111.txt")
 scores = {} # initialize an empty dictionary
@@ -25,11 +20,25 @@ for line in afinnfile:
 
 tweetcleanup = {}
 tweets = {}
-# for line in open('output.json', 'r'):
-for line in open('output.json', 'r'):
-    tweets.update(json.loads(line))
-    if 'id' in tweets:
-        tweetcleanup.update({tweets['id']:tweets['text']})
+
+with open('output.txt', 'r') as f:
+    for line in f:
+        tweets.update(json.loads(line))
+        if 'created_at' in json.loads(line):
+            # tweetcleanup.update({tweets['id']:tweets['text']})
+            tweet_word_list = tweets['text'].split()
+            sentiment_score = 0
+            word_score = 0
+            for i in range(len(tweet_word_list)):
+                word_score = scores.get(tweet_word_list[i],0)
+                sentiment_score += word_score
+            with open('orderedscores.txt', 'a') as the_file:
+                the_file.write('{}\n'.format(sentiment_score))
+                # tweetcleanup.update({tweets['id']:sentiment_score})
+        else:
+            with open('orderedscores.txt', 'a') as the_file:
+                the_file.write('{}\n'.format(0))
+                # tweetcleanup.update({'noid':0})
 
 if __name__ == '__main__':
     main()
