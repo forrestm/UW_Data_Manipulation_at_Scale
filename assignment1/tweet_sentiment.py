@@ -8,7 +8,9 @@ def lines(fp):
     print(str(len(fp.readlines())))
 
 def main():
-    afinnfile = open("AFINN-111.txt")
+    afinnfile = open(sys.argv[1])
+    tweet_file = open(sys.argv[2])
+    # afinnfile = open("AFINN-111.txt")
     scores = {} # initialize an empty dictionary
     for line in afinnfile:
       term, score  = line.split("\t")  # The file is tab-delimited. "\t" means "tab character"
@@ -19,25 +21,26 @@ def main():
     tweetcleanup = {}
     tweets = {}
 
-    with open('output.txt', 'r') as f:
-        for line in f:
-            tweets.update(json.loads(line))
-            if 'created_at' in json.loads(line):
-                tweet_word_list = tweets['text'].split()
-                sentiment_score = 0
-                word_score = 0
-                for i in range(len(tweet_word_list)):
-                    word_score = scores.get(tweet_word_list[i],0)
-                    sentiment_score += word_score
-                print(sentiment_score)
-                # with open('orderedscores.txt', 'a') as the_file:
-                    # the_file.write('{}\n'.format(sentiment_score))
-                    # tweetcleanup.update({tweets['id']:sentiment_score})
-            else:
-                # with open('orderedscores.txt', 'a') as the_file:
-                    # the_file.write('{}\n'.format(0))
-                    print(0)
-                    # tweetcleanup.update({'noid':0})
+    # with open('output.txt', 'r') as f:
+        # for line in f:
+    for line in tweet_file:
+        tweets.update(json.loads(line))
+        if 'created_at' in json.loads(line):
+            tweet_word_list = tweets['text'].split()
+            sentiment_score = 0
+            word_score = 0
+            for i in range(len(tweet_word_list)):
+                word_score = scores.get(tweet_word_list[i],0)
+                sentiment_score += word_score
+            print(sentiment_score)
+            # with open('orderedscores.txt', 'a') as the_file:
+                # the_file.write('{}\n'.format(sentiment_score))
+                # tweetcleanup.update({tweets['id']:sentiment_score})
+        else:
+            # with open('orderedscores.txt', 'a') as the_file:
+                # the_file.write('{}\n'.format(0))
+                print(0)
+                # tweetcleanup.update({'noid':0})
 
 if __name__ == '__main__':
     main()
