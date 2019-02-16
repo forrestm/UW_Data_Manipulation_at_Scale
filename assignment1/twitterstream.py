@@ -1,6 +1,6 @@
 import oauth2 as oauth
 import urllib2 as urllib
-import config.py as config
+import config as config
 
 # See assignment1.html instructions or README for how to get these credentials
 
@@ -52,7 +52,7 @@ def twitterreq(url, method, parameters):
   return response
 
 def fetchsamples():
-  url = "https://stream.twitter.com/1/statuses/sample.json"
+  url = "https://stream.twitter.com/1.1/statuses/sample.json"
   parameters = []
   response = twitterreq(url, "GET", parameters)
   for line in response:
