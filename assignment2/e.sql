@@ -1,7 +1,7 @@
-SELECT 
+SELECT COUNT(*) FROM (
 
-SELECT docid FROM frequency
+SELECT * FROM frequency
 
 GROUP BY docid
 
-HAVING COUNT(term) > 300;
+HAVING COUNT(term) > 300);
