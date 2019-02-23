@@ -43,7 +43,7 @@ _Note: SQL will return a multiset with the projection requiring the use of ```SE
 
 ### Selection $(\sigma)$
 
-When applied to a relation $$R​$$ produces a new relation with a subset (contained within the original relation) of $$R​$$ tuples (rows).
+When applied to a relation $$R$$ produces a new relation with a subset (contained within the original relation) of $$R$$ tuples (rows).
 
 $$\sigma_{a\theta b} (R)$$ or $$\sigma_{a\theta v}(R)$$
 
@@ -133,5 +133,20 @@ SELECT DISTINCT --will eliminate duplicates
 
 GROUP BY --column_names 
 HAVING --condition. Used because WHERE could not be used with aggregate functions
+```
+
+#### Export to CSV
+
+```sqlite
+>sqlite3 c:/sqlite/chinook.db
+sqlite> .headers on
+sqlite> .mode csv
+sqlite> .output data.csv
+sqlite> SELECT customerid,
+   ...>        firstname,
+   ...>        lastname,
+   ...>        company
+   ...>   FROM customers;
+sqlite> .quit
 ```
 
