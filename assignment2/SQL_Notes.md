@@ -150,3 +150,49 @@ sqlite> SELECT customerid,
 sqlite> .quit
 ```
 
+### [Matrix Multiplication](https://notes.mindprince.in/2013/06/07/sparse-matrix-multiplication-using-sql.html)
+
+$$[A] = \begin{bmatrix} 0&1&0& 0&9\\ 0 &0&3&0&0\\0&0&0&2&0\\0&0&0&0&0 \end{bmatrix}$$ $$[B] = \begin{bmatrix} 1&0&0\\ 0 &0&0\\0&7&0\\0&0&2\\0&0&0 \end{bmatrix}$$
+
+$$A \times B= \begin{bmatrix} 0&0&0\\ 0 &21&0\\0&0&4\\0&0&0 \end{bmatrix}​$$
+
+```sql
+CREATE TABLE a (
+row_num INT,
+col_num INT,
+value INT,
+PRIMARY KEY(row_num, col_num)
+); 
+
+CREATE TABLE b (
+row_num INT,
+col_num INT,
+value INT,
+PRIMARY KEY(row_num, col_num)
+); 
+```
+
+```sql
+INSERT INTO a VALUES
+(1, 2, 1),
+(1, 5, 9),
+(2, 3, 3),
+(3, 4, 2);
+
+INSERT INTO b VALUES
+(1, 1, 1),
+(3, 2, 7),
+(4, 3, 2);
+```
+
+```sql
+SELECT a.row_num, b.col_num, SUM(a.value*b.value)
+FROM a, b
+WHERE a.col_num = b.row_num
+GROUP BY a.row_num, b.col_num;
+
+2|2|21
+3|3|4
+```
+
+To see how this query works, remember the formula for cell (i,j) of the product. It is the sum of a(i,k)*b(k,j) for all k. The `JOIN` condition `a.col_num = b.row_num` makes sure that both `a.value` and `b.value` has the same k. The `GROUP BY` clause makes sure that we sum over all k’s.
